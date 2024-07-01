@@ -1,14 +1,18 @@
 import { Component } from "react";
+import Hoc from "./Hoc";
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import Favourite from "./Favourite";
 
-export default class products extends Component{
+
+class Products extends Component{
     constructor(props){
         super(props)
-
+                
         this.state = ({apiData:[],favArr:[]})
-    }
+
+    }  
 
     componentDidMount(){
         fetch('https://dummyjson.com/products')
@@ -17,12 +21,15 @@ export default class products extends Component{
         .catch((res)=>{console.log("Got error on api",res)})
     }
 
+
+
+
     handleFav=(index)=>{
+        
+      
+        this.setState(() => {
 
-
-        this.setState((prevState) => {
-
-            const updatedApiData = prevState.apiData.map((item, i) => {
+            const updatedApiData = this.state.apiData.map((item, i) => {
                 if (i === index) {
                     if(item.favBg===false){
                     return { ...item, favBg: true }; 
@@ -30,16 +37,25 @@ export default class products extends Component{
                     else{
                         return { ...item, favBg: false }; 
                     }
-                }
+                }   
                 return item;
             });
-    
+          
             return { apiData: updatedApiData };
         });
 
-
-
+        this.setState({favArr:[...this.state.favArr,this.state.apiData[index]]})
+      
     }
+
+    Viewpage = (itemId)=>{
+        console.log(itemId,"itemId")
+        const {navigate} = this.props.router;
+        navigate(`/View/${itemId}`)
+       
+       }
+
+   
 
     render(){
         return(
@@ -48,9 +64,10 @@ export default class products extends Component{
             <section className='grid grid-cols-4 gap-10 place-items-center'>
 
 {
-     this.state.apiData.map((item,index)=>{     
-        return <div key={index} className='w-80 h-auto p-2 shadow-xl bg-white  rounded-lg flex flex-col  items-center' >
+     this.state.apiData && this.state.apiData.map((item,index)=>{     
+        return <div  key={index} className='w-80 h-auto p-2 shadow-xl bg-white  rounded-lg flex flex-col  items-center' >
             <div >
+           
   
             <button className="relative top-0 left-0 h-auto w-auto" onClick={()=>this.handleFav(index)}>
 
@@ -61,7 +78,7 @@ export default class products extends Component{
             </button>
             <RemoveRedEyeIcon onClick={()=>console.log("hello world")}/>
              
-            <img src={item.images[0]} alt="" className="w-48 h-48 transition duration-500 hover:scale-125" />
+            <img src={item.images[0]} alt="" className="w-48 h-48 transition duration-500 hover:scale-125"  onClick={()=>this.Viewpage(item.id)}/>
             </div>
             <div>
 
@@ -76,9 +93,21 @@ export default class products extends Component{
 }
 
 </section>
+<Favourite  ar= {this.state.favArr} />
+
+{  
+    this.state.favArr.map((item,index)=>{
+        return <div className="h-80 w-60 bg-slate-400 border-2 border-black" key={index}>
+            <img src={item.images[0]} alt="#" />
+            <h1>item.price</h1>
+        </div>
+    })
+}
 
             </div>
             </>
         )
     }
 }
+
+export default Hoc(Products)

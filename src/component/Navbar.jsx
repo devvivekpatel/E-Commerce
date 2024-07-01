@@ -1,6 +1,6 @@
 import {Component} from 'react';
 import { Link } from 'react-router-dom';
-import Products from './Products';
+// import Products from './Products';
 
 
 export default class Navbar extends Component{
@@ -49,6 +49,9 @@ export default class Navbar extends Component{
         <li class="nav-item">
         <Link to="/view" className='nav-link active'>View</Link>
         </li>
+        <li class='nav-item'>
+            <Link to='/products' className='nav-link active'>Products</Link>
+        </li>
         </div>
                 
             </ul>
@@ -58,11 +61,11 @@ export default class Navbar extends Component{
           <img  alt="###" id='img'src={this.state.imgArr[this.state.value]} className='h-full w-full'/>
 
             </div>
-
+{/* 
 {
    this.state.productData ?  <Products/> :<button className='p-2 bg-blue-800 text-white w-60 m-auto' onClick={()=>this.setState({productData:true})}>Products</button>
 
-}
+} */}
            
             </>
         )
