@@ -10,7 +10,7 @@ function Hoc(Component) {
 
     }
   return ComponentWithRouterProp
-  
+                                                                                
   
 }
 

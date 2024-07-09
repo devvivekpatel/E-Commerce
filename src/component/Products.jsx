@@ -10,7 +10,7 @@ class Products extends Component{
     constructor(props){
         super(props)
                 
-        this.state = ({apiData:[],favArr:[]})
+        this.state = ({apiData:[],favArr:[],cartArr:[]})
 
     }  
 
@@ -22,9 +22,20 @@ class Products extends Component{
     }
 
 
+addToCart=(index)=>{
 
+    this.setState((prevState) => {
+        const updatedCartArr = [...prevState.cartArr, prevState.apiData[index]];
+
+        return { cartArr: updatedCartArr };
+    });
+
+    console.log("I am cart",this.state.cartArr)
+
+}
 
     handleFav=(index)=>{
+        console.log("favarr",this.state.favArr)
         
       
         this.setState(() => {
@@ -32,9 +43,19 @@ class Products extends Component{
             const updatedApiData = this.state.apiData.map((item, i) => {
                 if (i === index) {
                     if(item.favBg===false){
+
+                        this.setState((prevState) => {
+                            const updatedFavArr = [...prevState.favArr, prevState.apiData[index]];
+                    
+                            return { favArr: updatedFavArr };
+                        });
+
                     return { ...item, favBg: true }; 
                     }
                     else{
+
+                        this.state.favArr.filter((ar,index)=> ar!==index)
+                        console.log("fav",this.state.favArr)
                         return { ...item, favBg: false }; 
                     }
                 }   
@@ -44,7 +65,13 @@ class Products extends Component{
             return { apiData: updatedApiData };
         });
 
-        this.setState({favArr:[...this.state.favArr,this.state.apiData[index]]})
+        // this.setState({favArr:[...this.state.favArr,this.state.apiData[index]]})
+
+        // this.setState((prevState) => {
+        //     const updatedFavArr = [...prevState.favArr, prevState.apiData[index]];
+    
+        //     return { favArr: updatedFavArr };
+        // });
       
     }
 
@@ -85,7 +112,7 @@ class Products extends Component{
             <h1 className="text-black font-medium">{item.title}</h1>
             <h1><span className="font-medium">Price :</span>{item.price} $</h1>
      
-            <button className="bg-blue-700 text-white h-10 w-28 ">Add to Cart</button>
+            <button className="bg-blue-700 text-white h-10 w-28 " onClick={()=>this.addToCart(index)}>Add to Cart</button>
             </div>
       
         </div>
@@ -95,14 +122,6 @@ class Products extends Component{
 </section>
 <Favourite  ar= {this.state.favArr} />
 
-{  
-    this.state.favArr.map((item,index)=>{
-        return <div className="h-80 w-60 bg-slate-400 border-2 border-black" key={index}>
-            <img src={item.images[0]} alt="#" />
-            <h1>item.price</h1>
-        </div>
-    })
-}
 
             </div>
             </>

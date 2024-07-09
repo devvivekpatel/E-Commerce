@@ -3,14 +3,14 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 export default class Cart extends Component{
 
-    constructor(props){
+    constructor(props){                                                                                                                                                 
         super(props)
 
         this.state = ({cartArr:[],count:1})
     }
 
 
-    componentDidMount(){
+    componentDidMount(){                                                                                                                                
         fetch('https://dummyjson.com/products/5')
         .then((res)=>res.json())
         .then((json)=>this.setState({cartArr:json},()=>{
